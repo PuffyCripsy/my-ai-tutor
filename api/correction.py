@@ -24,24 +24,23 @@ class handler(BaseHTTPRequestHandler):
                 {"role": "system", "content": "You are a helpful English tutor. Please correct the user's diary. Respond in JSON format with two keys: 'corrected' (the full corrected diary) and 'explanation' (brief tips in Korean)."},
                 {"role": "user", "content": user_input}
             ],
-            "response_format": { "type": "json_object" } # JSON으로 응답받기
+            "response_format": { "type": "json_object" }
         }
 
         try:
             response = requests.post(url, headers=headers, json=payload)
             full_result = response.json()
             
-            # AI가 준 답변 문자열을 파싱
+            # AI 답변 추출
             ai_content = json.loads(full_result['choices'][0]['message']['content'])
             
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            
-            # 프론트엔드가 기다리는 { "corrected": "...", "explanation": "..." } 형식으로 보냄
             self.wfile.write(json.dumps(ai_content).encode())
 
         except Exception as e:
             self.send_response(500)
+            self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({"error": str(e)}).encode())
