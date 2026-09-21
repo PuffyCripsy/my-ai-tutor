@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 영어 일기 튜터</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>📝 AI 영어 일기 튜터</h1>
+        <nav>
+            <a href="index.html">홈</a> | 
+            <a href="about.html">서비스 소개</a> | 
+            <a href="guide.html">사용법</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="input-section">
+            <h3>오늘의 일기를 영어로 써보세요</h3>
+            <p class="hint">중학교 수준의 쉬운 단어로도 충분합니다!</p>
+            <textarea id="diaryInput" placeholder="예: I go to the park today. It was very fun."></textarea>
+            <button id="submitBtn">AI에게 첨삭 받기</button>
+        </section>
+
+        <section id="resultSection" class="result-section" style="display: none;">
+            <h3>첨삭 결과</h3>
+            <div class="result-box">
+                <h4>✅ 교정된 문장</h4>
+                <p id="correctedText"></p>
+            </div>
+            <div class="result-box">
+                <h4>💡 학습 팁</h4>
+                <p id="explanation"></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
