@@ -9,6 +9,7 @@ class handler(BaseHTTPRequestHandler):
         data = json.loads(post_data)
         user_input = data.get('diary', '')
 
+        # 코딧세이 API 설정
         api_key = "codyssey-7m8q9p2r5n1k4j3l"
         url = "https://copa.codyssey.kr/v1/chat/completions"
 
@@ -17,23 +18,29 @@ class handler(BaseHTTPRequestHandler):
             "Content-Type": "application/json"
         }
 
-        # 여기서 모델명을 결정합니다!
         payload = {
             "model": "gpt-5.4-mini", 
             "messages": [
-                {"role": "system", "content": "You are a helpful English tutor. Correct the diary and explain why."},
+                {"role": "system", "content": "You are a helpful English tutor. Please correct the user's diary. Respond in JSON format with two keys: 'corrected' (the full corrected diary) and 'explanation' (brief tips in Korean)."},
                 {"role": "user", "content": user_input}
-            ]
+            ],
+            "response_format": { "type": "json_object" } # JSON으로 응답받기
         }
 
         try:
             response = requests.post(url, headers=headers, json=payload)
-            result = response.json()
+            full_result = response.json()
+            
+            # AI가 준 답변 문자열을 파싱
+            ai_content = json.loads(full_result['choices'][0]['message']['content'])
             
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps(result).encode())
+            
+            # 프론트엔드가 기다리는 { "corrected": "...", "explanation": "..." } 형식으로 보냄
+            self.wfile.write(json.dumps(ai_content).encode())
+
         except Exception as e:
             self.send_response(500)
             self.end_headers()
