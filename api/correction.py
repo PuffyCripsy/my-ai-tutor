@@ -11,7 +11,7 @@ class handler(BaseHTTPRequestHandler):
             user_input = data.get('diary', '')
 
             # 코딧세이 API 설정
-            api_key = "=sk-cody-live-cR3j_c3DeW4jE3ubMquNcfI84I4b8ra8NuzMLBs9NEM"
+            api_key = "sk-cody-live-cR3j_c3DeW4jE3ubMquNcfI84I4b8ra8NuzMLBs9NEM"
             url = "https://copa.codyssey.kr/v1/chat/completions"
 
             headers = {
