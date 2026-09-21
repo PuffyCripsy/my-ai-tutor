@@ -4,7 +4,7 @@ import requests
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        # 아래 따옴표 안에 본인의 키를 넣으세요. (예: "codyssey-abc1234...")
+        # ⚠️ 여기에 본인의 API 키를 꼭 넣어주세요!
         api_key = "sk-cody-live-cR3j_c3DeW4jE3ubMquNcfI84I4b8ra8NuzMLBs9NEM"
         url = "https://copa.codyssey.kr/v1/chat/completions"
 
@@ -21,7 +21,10 @@ class handler(BaseHTTPRequestHandler):
         payload = {
             "model": "gpt-5.4-mini",
             "messages": [
-                {"role": "system", "content": "You are a helpful English tutor. Correct the user's diary and provide a brief learning tip in Korean."},
+                {
+                    "role": "system", 
+                    "content": "You are a helpful English tutor. Correct the user's diary. You MUST follow this format: [Corrected Sentence] ### [Brief Tip in Korean]"
+                },
                 {"role": "user", "content": user_text}
             ]
         }
@@ -37,13 +40,8 @@ class handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(json.dumps({"result": result}).encode('utf-8'))
             else:
-                error_msg = response_data.get('error', {}).get('message', response.text)
                 self.send_response(response.status_code)
-                self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(json.dumps({"result": f"API Error: {error_msg}"}).encode('utf-8'))
         except Exception as e:
             self.send_response(500)
-            self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({"result": f"Server Error: {str(e)}"}).encode('utf-8'))

@@ -4,36 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 영어 일기 튜터</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Pretendard', sans-serif; }
+        .container { max-width: 800px; margin-top: 50px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .result-box { background-color: #f1f7ff; border-left: 5px solid #007bff; padding: 15px; border-radius: 5px; margin-top: 10px; }
+        .tip-box { background-color: #fff4f4; border-left: 5px solid #ff4d4d; padding: 15px; border-radius: 5px; margin-top: 10px; }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="card p-4 mb-4 text-center">
             <h1>📝 AI 영어 일기 튜터</h1>
-            <nav>홈 | 서비스 소개 | 사용법</nav>
-        </header>
+            <p class="text-muted">홈 | 서비스 소개 | 사용법</p>
+        </div>
 
-        <main>
-            <section class="input-section">
-                <h2>오늘의 일기를 영어로 써보세요</h2>
-                <p>중학교 수준의 쉬운 단어로도 충분합니다!</p>
-                <textarea id="diaryInput" placeholder="I finally succeeded finishing my project."></textarea>
-                <button id="submitBtn">AI에게 첨삭 받기</button>
-            </section>
+        <div class="card p-4">
+            <h4 class="mb-3">오늘의 일기를 영어로 써보세요</h4>
+            <p class="text-muted">중학교 수준의 쉬운 단어로도 충분합니다!</p>
+            <!-- placeholder 부분이 예시 문구입니다 -->
+            <textarea id="diary-input" class="form-control mb-3" rows="6" placeholder="예) I went to the park."></textarea>
+            <button onclick="getCorrection()" id="submit-btn" class="btn btn-primary btn-lg w-100">AI에게 첨삭 받기</button>
+        </div>
 
-            <section id="resultSection" class="result-section" style="display: none;">
-                <h3>첨삭 결과</h3>
-                <div class="result-box">
-                    <h4>✅ 교정된 문장</h4>
-                    <p id="correctedText"></p>
-                </div>
-                <div class="result-box">
-                    <h4>💡 학습 팁</h4>
-                    <p id="explanation"></p>
-                </div>
-            </section>
-        </main>
+        <div class="mt-5">
+            <h5>첨삭 결과</h5>
+            <div class="card p-4">
+                <h6>✅ 교정된 문장</h6>
+                <div id="correction-result" class="result-box">교정된 내용이 여기에 표시됩니다.</div>
+                
+                <h6 class="mt-4">💡 학습 팁</h6>
+                <div id="tip-result" class="tip-box">설명이 여기에 표시됩니다.</div>
+            </div>
+        </div>
     </div>
-    <script src="js/script.js"></script>
+
+    <script>
+        async function getCorrection() {
+            const text = document.getElementById('diary-input').value;
+            const btn = document.getElementById('submit-btn');
+            
+            if (!text) {
+                alert("일기를 입력해주세요!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "AI가 분석 중...";
+            document.getElementById('correction-result').innerText = "분석 중...";
+            document.getElementById('tip-result').innerText = "분석 중...";
+
+            try {
+                const response = await fetch('/api/correction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: text })
+                });
+
+                const data = await response.json();
+                
+                if (data.result) {
+                    // AI가 보낸 답변을 ### 기준으로 나눕니다.
+                    const parts = data.result.split('###');
+                    document.getElementById('correction-result').innerText = parts[0].trim();
+                    document.getElementById('tip-result').innerText = parts[1] ? parts[1].trim() : "팁을 생성하지 못했습니다.";
+                } else {
+                    document.getElementById('correction-result').innerText = "오류: " + data.error;
+                }
+            } catch (e) {
+                document.getElementById('correction-result').innerText = "서버 연결 오류가 발생했습니다.";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "AI에게 첨삭 받기";
+            }
+        }
+    </script>
 </body>
 </html>
