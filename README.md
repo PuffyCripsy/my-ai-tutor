@@ -3,7 +3,7 @@
 AI를 활용하여 사용자가 작성한 영어 일기를 실시간으로 교정해 주고, 학습 팁을 제공하는 웹 서비스입니다.
 
 ## 🚀 배포 주소
-- **Vercel URL**: [https://my-ai-tutor-b83mz65q3-yunis1.vercel.app/](https://my-ai-tutor-b83mz65q3-yunis1.vercel.app/)
+- **Vercel URL**: https://my-ai-tutor-rho.vercel.app/index.html
 
 ## 📌 서비스 소개 (서비스 기획서)
 - **서비스 목적**: 영어 작문이 막막한 학습자들을 위해 만들었습니다. 
