@@ -39,3 +39,12 @@ project-root/
 ├── guide.html             # 사용법 페이지
 ├── requirements.txt       # Python 패키지 의존성
 └── README.md              # 프로젝트 문서
+```
+## 📸 서비스 스크린샷
+
+### 모바일 화면
+![모바일 화면](./screenshots/mobile.jpg)
+
+### PC 화면
+![PC 화면](./screenshots/desk.jpg)
+[PC 화면](./screenshots/desk1.png)
