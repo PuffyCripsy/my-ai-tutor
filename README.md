@@ -47,5 +47,7 @@ project-root/
 
 ### PC 화면
 ![PC 화면](./screenshots/desk.jpg)
-
 ![PC 화면](./screenshots/desk1.png)
+
+### AI 코딩 대화 로그
+![AI 코딩 대화로그](./screenshots/AI%20코딩%20대화로그.png)
