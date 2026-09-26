@@ -47,4 +47,5 @@ project-root/
 
 ### PC 화면
 ![PC 화면](./screenshots/desk.jpg)
-[PC 화면](./screenshots/desk1.png)
+
+![PC 화면](./screenshots/desk1.png)
